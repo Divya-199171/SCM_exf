@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Shipment</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', path='create_shipment.css') }}">
+
+</head>
+
+<body>
+{% extends "base.html" %}
+
+{% block title %}Create Shipment{% endblock %}
+
+{% block content %}
+  
+  <div class="main-content">
+    <div class="form-container">
+      <h2>Create New Shipment</h2>
+
+      {% if success %}
+        <div class="alert-success" id="successMessage">
+            {{ success }}
+        </div>
+        <script>
+          setTimeout(function() {
+            const msg = document.getElementById("successMessage");
+            if (msg) {
+              msg.style.display = 'none';
+            }
+          }, 3000); // hide after 3 seconds
+        </script>
+      {% endif %}
+
+      <form id="shipmentForm" method="POST" action="/create-shipment">
+        <div class="form-group">
+          <label for="shipmentNumber">Shipment Number</label>
+          <input type="text" id="shipmentNumber" name="shipmentNumber" value="{{ shipment_id }}" readonly required>
+        </div>
+
+        <div class="form-group">
+          <label for="route">Select Route</label>
+          <select id="route" name="route" required>
+            <option value="" disabled selected>Select Route</option>
+            <option value="Route A">Route A</option>
+            <option value="Route B">Route B</option>
+            <option value="Route C">Route C</option>
+            <option value="Route D">Route D</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="device">Device</label>
+          <select id="device" name="device" required>
+            <option value="" disabled selected>Select Device</option>
+            <option value="Device 1">Device 1</option>
+            <option value="Device 2">Device 2</option>
+            <option value="Device 3">Device 3</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="poNumber">PO Number</label>
+          <input type="text" id="poNumber" name="poNumber" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ndcNumber">NDC Number</label>
+          <input type="text" id="ndcNumber" name="ndcNumber" required>
+        </div>
+
+        <div class="form-group">
+          <label for="serialNumber">Serial Number of Goods</label>
+          <input type="text" id="serialNumber" name="serialNumber" required>
+        </div>
+
+        <div class="form-group">
+          <label for="goodsType">Goods Type</label>
+          <select id="goodsType" name="goodsType" required>
+            <option value="" disabled selected>Select Goods Type</option>
+            <option value="Goods1">Goods1</option>
+            <option value="Goods2">Goods2</option>
+            <option value="Goods3">Goods3</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="deliveryDate">Expected Delivery Date</label>
+          <input type="date" id="deliveryDate" name="deliveryDate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="deliveryNumber">Delivery Number</label>
+          <input type="text" id="deliveryNumber" name="deliveryNumber" required>
+        </div>
+
+        <div class="form-group">
+          <label for="batchId">Batch ID</label>
+          <input type="text" id="batchId" name="batchId" required>
+        </div>
+
+        <div class="form-group">
+          <label for="shipmentDesc">Shipment Description</label>
+          <textarea id="shipmentDesc" name="shipmentDesc" required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit">Create Shipment</button>
+          <button type="reset" class="clear-btn">Clear Details</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
+</body>
+</html>

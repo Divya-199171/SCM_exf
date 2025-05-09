@@ -1,0 +1,54 @@
+
+
+services:
+
+  fastapi_app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - kafka
+    env_file:
+      - .env
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  socket:
+    build: ./kafka/socket  # Update the path to the socket folder
+    depends_on:
+      - kafka
+    ports:
+      - "5050:5050"
+
+  producer:
+    build: ./kafka/producer  # Update the path to the producer folder
+    depends_on:
+      - kafka
+      - socket
+
+  consumer:
+    build: ./kafka/consumer  # Update the path to the consumer folder
+    depends_on:
+      - kafka
+      - producer
+      - mongo
+    environment:
+      - DATABASE_URL=mongodb+srv://guthidivya:Chandan25@cluster0.r1qau.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
